@@ -1,0 +1,10 @@
+.text-center {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
