@@ -38,11 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cron',
 
     'EnergyStats.accounts.apps.AccountsConfig',
     'EnergyStats.dashboard.apps.DashboardConfig',
     'EnergyStats.prices.apps.PricesConfig',
     'EnergyStats.stats.apps.StatsConfig',
+    'EnergyStats.energy_service.apps.EnergyServiceConfig',
+    "EnergyStats.common.apps.CommonConfig"
 ]
 
 MIDDLEWARE = [
@@ -137,3 +140,22 @@ LOGIN_URL = '/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.EnergyUser'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'django_cron.log',
+        },
+    },
+    'loggers': {
+        'django_cron': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

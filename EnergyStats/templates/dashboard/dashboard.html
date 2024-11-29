@@ -7,5 +7,62 @@
     <h1>Welcome to Energy Stats</h1>
     <h3>Dashboard</h3>
     <p>Your one-stop platform for electricity prices and market statistics.</p>
+ <h2>Prices for {{ today }}</h2>
+   <h3>Peak Market (09:00 - 19:00)</h3>
+    <table>
+        <tr>
+            <th>Time</th>
+            {% for hourly_data in peak_hours %}
+                <th>{{ hourly_data.time }}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>EUR</td>
+            {% for hourly_data in peak_hours %}
+                <td>{{ hourly_data.data.eur }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>BGN</td>
+            {% for hourly_data in peak_hours %}
+                <td>{{ hourly_data.data.bgn }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Volume</td>
+            {% for hourly_data in peak_hours %}
+                <td>{{ hourly_data.data.volume }}</td>
+            {% endfor %}
+        </tr>
+    </table>
+
+    <h3>Off-Peak Market (All other hours)</h3>
+    <table>
+        <tr>
+            <th>Time</th>
+            {% for hourly_data in off_peak_hours %}
+                <th>{{ hourly_data.time }}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>EUR</td>
+            {% for hourly_data in off_peak_hours %}
+                <td>{{ hourly_data.data.eur }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>BGN</td>
+            {% for hourly_data in off_peak_hours %}
+                <td>{{ hourly_data.data.bgn }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Volume</td>
+            {% for hourly_data in off_peak_hours %}
+                <td>{{ hourly_data.data.volume }}</td>
+            {% endfor %}
+        </tr>
+    </table>
+
 </div>
 {% endblock %}
