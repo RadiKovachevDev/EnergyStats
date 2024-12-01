@@ -26,6 +26,18 @@
     margin-bottom: 20px;
 }
 
+.price-cell {
+    display: block;
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.price-cell:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 @media (max-width: 767px) {
     .row .col-md-3 {
         flex: 0 0 100%;

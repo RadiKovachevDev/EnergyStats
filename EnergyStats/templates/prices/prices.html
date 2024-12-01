@@ -7,22 +7,15 @@
     <h1 class="text-center">Energy Prices</h1>
 
     {% if prices %}
-        <table class="table table-striped mt-4">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Date</th>
-                    <th>Hourly Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for price in prices %}
-                <tr>
-                    <td>{{ price.date }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="row justify-content-center mt-4">
+            {% for price in prices %}
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'price_details' price.date %}" class="price-cell text-decoration-none">
+                        {% include 'common/info_cell.html' with title="Price for" value=price.date %}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     {% else %}
         <p class="text-center">No prices available.</p>
     {% endif %}
