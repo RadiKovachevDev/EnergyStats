@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from EnergyStats.prices.models import ElectricityPrice
+from EnergyStats.common.local_data_manager import LocalDataManager
 
 
 @login_required
-def price_list(request):
-    prices = ElectricityPrice.objects.all().order_by('-date')
-    return render(request, 'prices/price_list.html', {'prices': prices})
+def prices_view(request):
+    prices = LocalDataManager.get_energy_prices()
+
+    context = {
+        'prices': prices
+    }
+    return render(request, 'prices/prices.html', context)
