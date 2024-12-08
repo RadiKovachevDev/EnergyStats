@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 import calendar
 from typing import final
@@ -132,8 +133,13 @@ class StatisticsManager:
         else:
             return 0.0
 
+    import time
+
     @staticmethod
     def total_volume_by(energy_prices, measuring_units=MeasuringUnits.MWH, market_type=MarketType.BASE):
+        start_time = time.time()  # Започваме да засичаме времето
+        print("Start total_volume_by")
+
         total_volume = 0.0
 
         for energy_price in energy_prices:
@@ -145,15 +151,20 @@ class StatisticsManager:
                 continue
 
         if measuring_units == MeasuringUnits.KWH:
-            return round(total_volume * 1000, 2)
+            result = round(total_volume * 1000, 2)
         elif measuring_units == MeasuringUnits.MWH:
-            return round(total_volume, 2)
+            result = round(total_volume, 2)
         elif measuring_units == MeasuringUnits.GWH:
-            return round(total_volume / 1000, 2)
+            result = round(total_volume / 1000, 2)
         elif measuring_units == MeasuringUnits.TWH:
-            return round(total_volume / 1_000_000, 2)
+            result = round(total_volume / 1_000_000, 2)
         else:
-            return 0.0
+            result = 0.0
+
+        end_time = time.time()
+        print(f"End total_volume_by - Execution time: {end_time - start_time:.2f} seconds")
+
+        return result
 
     @staticmethod
     def min_price_by(energy_prices, market_type=MarketType.BASE):

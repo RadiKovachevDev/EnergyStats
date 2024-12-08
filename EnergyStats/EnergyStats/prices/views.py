@@ -28,8 +28,19 @@ def price_details_view(request, date):
 
     price = get_object_or_404(EnergyPrice, date=selected_date)
 
+    energy_price = LocalDataManager.get_energy_price(selected_date).first()
+
+    dates = []
+    prices = []
+
+    if energy_price:
+        for hourly_data in energy_price.hourly_data.all():
+            time_obj = datetime.strptime(hourly_data.time, "%H:%M:%S")
+            dates.append(time_obj.strftime("%H:%M"))
+            price = CalculationManager.get_price_by(hourly_data.data, DefaultCurrency.BGN)
+            prices.append(price)
+
     default_currency = DefaultCurrency.BGN
-    energy_price = LocalDataManager.get_energy_price(selected_date)
     peak_hours = LocalDataManager.get_hours_by(selected_date, MarketType.PEAK)
     off_peak_hours = LocalDataManager.get_hours_by(selected_date, MarketType.OFF_PEAK)
     hourly_info = LocalDataManager.get_hourly_info_for_current_hour(selected_date)
@@ -49,6 +60,8 @@ def price_details_view(request, date):
         'peak_hours': peak_hours,
         'off_peak_hours': off_peak_hours,
         'selected_date': selected_date,
+        'dates': dates,
+        'prices': prices,
         'hourly_info_value': hourly_info_value,
         'min_price': min_price,
         'max_price': max_price,

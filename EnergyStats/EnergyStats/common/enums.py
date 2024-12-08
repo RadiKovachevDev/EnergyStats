@@ -13,8 +13,8 @@ class DefaultCurrency(models.TextChoices):
 
 
 class MeasuringUnits(models.TextChoices):
-    KWH = 'kMh'
-    MWH = 'mWh'
-    GWH = 'gWh'
-    TWH = 'tWh'
+    KWH = 'KMh', 'KMh'
+    MWH = 'MWh', 'MWh'
+    GWH = 'GWh', 'GWh'
+    TWH = 'TWh', 'TWh'
 

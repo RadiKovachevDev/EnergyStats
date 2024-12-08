@@ -40,6 +40,14 @@
     background-color: #0056b3;
 }
 
-#weeklyChart, #dailyChart, #monthlyChart, #yearlyChart {
+#weeklyChart {
+    max-height: 300px;
+}
+
+#monthlyChart {
+    max-height: 300px;
+}
+
+#yearlyChart {
     max-height: 300px;
 }

@@ -2,61 +2,85 @@
 {% load static %}
 
 {% block content %}
-<div class="container text-center mt-5">
     <h1>Welcome to Energy Stats</h1>
     <h3>Dashboard</h3>
     <p>Your one-stop platform for electricity prices and market statistics.</p>
 
+
+    <div class="mt-5">
+        <canvas id="dailyChart" ></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = {{ dates|safe }};
+        const prices = {{ prices|safe }};
+        const ctx = document.getElementById('dailyChart').getContext('2d');
+        const weeklyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Price (BGN)',
+                        data: prices,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Value'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Dates'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
     <div class="row justify-content-center">
         <div class="col-md-3 col-6">
-            <div class="info-card">
-                {% include 'common/info_cell.html' with title="Price per kWh" value=hourly_info_value %}
-            </div>
+            {% include 'common/info_cell.html' with title="Price per kWh" value=hourly_info_value %}
         </div>
         <div class="col-md-3 col-6">
-            <div class="info-card">
-                {% include 'common/info_cell.html' with title="Average Price" value=average_price %}
-            </div>
+            {% include 'common/info_cell.html' with title="Average Price" value=average_price %}
         </div>
         <div class="col-md-3 col-6">
-            <div class="info-card">
-                {% include 'common/info_cell.html' with title="Off-Peak Market" value=average_price_off_peak %}
-            </div>
+            {% include 'common/info_cell.html' with title="Off-Peak Market" value=average_price_off_peak %}
         </div>
         <div class="col-md-3 col-6">
-            <div class="info-card">
-                {% include 'common/info_cell.html' with title="Peak Market" value=average_price_peak %}
-            </div>
+            {% include 'common/info_cell.html' with title="Peak Market" value=average_price_peak %}
         </div>
         <div class="col-md-3 col-6">
-            <div class="info-card">
-                {% include 'common/info_cell.html' with title="Min Price" value=min_price %}
-            </div>
+            {% include 'common/info_cell.html' with title="Min Price" value=min_price %}
         </div>
         <div class="col-md-3 col-6">
-            <div class="info-card">
-                {% include 'common/info_cell.html' with title="Max Price" value=max_price %}
-            </div>
+            {% include 'common/info_cell.html' with title="Max Price" value=max_price %}
         </div>
         <div class="col-md-3 col-6">
-            <div class="info-card">
-                {% include 'common/info_cell.html' with title="Total Volume" value=total_volume %}
-            </div>
+            {% include 'common/info_cell.html' with title="Total Volume" value=total_volume %}
         </div>
         <div class="col-md-3 col-6">
-            <div class="info-card">
-                {% include 'common/info_cell.html' with title="Volume" value=current_volume %}
-            </div>
+            {% include 'common/info_cell.html' with title="Volume" value=current_volume %}
         </div>
         <div class="col-md-3 col-6">
-            <div class="info-card">
-                {% include 'common/info_cell.html' with title="Min Volume" value=min_volume %}
-            </div>
+            {% include 'common/info_cell.html' with title="Min Volume" value=min_volume %}
         </div>
         <div class="col-md-3 col-6">
-            <div class="info-card">
-                {% include 'common/info_cell.html' with title="Max Volume" value=max_volume %}
-            </div>
+            {% include 'common/info_cell.html' with title="Max Volume" value=max_volume %}
         </div>
     </div>
 
@@ -68,7 +92,7 @@
             <tr>
                 <th>Time</th>
                 {% for hourly_data in peak_hours %}
-                    <th>{{ hourly_data.time }}</th>
+                    <th class="{% if hourly_data.time == current_time %}current-hour{% endif %}">{{ hourly_data.time }}</th>
                 {% endfor %}
             </tr>
             <tr>
@@ -98,7 +122,7 @@
             <tr>
                 <th>Time</th>
                 {% for hourly_data in off_peak_hours %}
-                    <th>{{ hourly_data.time }}</th>
+                    <th class="{% if hourly_data.time == current_time %}current-hour{% endif %}">{{ hourly_data.time }}</th>
                 {% endfor %}
             </tr>
             <tr>
@@ -121,5 +145,4 @@
             </tr>
         </table>
     </div>
-</div>
 {% endblock %}

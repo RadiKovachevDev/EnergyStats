@@ -3,3 +3,7 @@
 @import "login/login.css";
 @import "register/register.css";
 @import "dashboard/dashboard.css";
+@import "info_cell/info_cell.css";
+@import "prices/prices.css";
+@import "stats/stats.css";
+@import "prices/price_details.css";

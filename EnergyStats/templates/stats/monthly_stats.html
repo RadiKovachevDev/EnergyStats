@@ -1,0 +1,63 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Monthly Statistics Details</h1>
+
+        <div class="mt-5">
+            <canvas id="monthlyChart"></canvas>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
+            const monthlyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ monthly.dates|safe }},
+                    datasets: [
+                        {
+                            label: 'Average Price (BGN)',
+                            data: {{ monthly.prices|safe }},
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            fill: true,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        </script>
+
+
+        <div class="row justify-content-center">
+            <div class="col-md-4 col-6">
+                {% include 'common/info_cell.html' with title="Monthly Average Price" value=monthly.average_price %}
+            </div>
+            <div class="col-md-4 col-6">
+                {% include 'common/info_cell.html' with title="Monthly Total Volume" value=monthly.total_volume %}
+            </div>
+            <div class="col-md-4 col-6">
+                {% include 'common/info_cell.html' with title="Monthly Min Price" value=monthly.min_price %}
+            </div>
+            <div class="col-md-4 col-6">
+                {% include 'common/info_cell.html' with title="Monthly Max Price" value=monthly.max_price %}
+            </div>
+            <div class="col-md-4 col-6">
+                {% include 'common/info_cell.html' with title="Monthly Min Volume" value=monthly.min_volume %}
+            </div>
+            <div class="col-md-4 col-6">
+                {% include 'common/info_cell.html' with title="Monthly Max Volume" value=monthly.max_volume %}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

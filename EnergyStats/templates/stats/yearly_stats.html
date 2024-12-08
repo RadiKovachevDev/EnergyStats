@@ -1,0 +1,60 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Yearly Statistics Details</h1>
+
+        <div class="mt-5">
+            <canvas id="yearlyChart"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('yearlyChart').getContext('2d');
+        const yearlyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ yearly.dates|safe }},
+                datasets: [
+                    {
+                        label: 'Average Price (BGN)',
+                        data: {{ yearly.prices|safe }},
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: true,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    </script>
+
+    <div class="row justify-content-center">
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Yearly Average Price" value=yearly.average_price %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Yearly Total Volume" value=yearly.total_volume %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Yearly Min Price" value=yearly.min_price %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Yearly Max Price" value=yearly.max_price %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Yearly Min Volume" value=yearly.min_volume %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Yearly Max Volume" value=yearly.max_volume %}
+        </div>
+    </div>
+{% endblock %}
