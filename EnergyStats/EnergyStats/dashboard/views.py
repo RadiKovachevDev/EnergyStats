@@ -8,20 +8,21 @@ from EnergyStats.common.local_data_manager import LocalDataManager
 
 def dashboard_view(request):
     today = date.today()
+    default_currency = DefaultCurrency.BGN
     energy_price = LocalDataManager.get_energy_price(today)
     peak_hours = LocalDataManager.get_hours_by(today, MarketType.PEAK)
-    off_peak_hours = LocalDataManager.get_hours_by(today, MarketType.PEAK)
+    off_peak_hours = LocalDataManager.get_hours_by(today, MarketType.OFF_PEAK)
     hourly_info = LocalDataManager.get_hourly_info_for_current_hour(today)
-    hourly_info_value = f"{round(CalculationManager.get_price_by(hourly_info, DefaultCurrency.BGN) / 1000, 5)} {DefaultCurrency.BGN}"
-    min_price = CalculationManager.get_min_price_by(today, MarketType.PEAK)
-    max_price = CalculationManager.get_max_price_by(today, MarketType.PEAK)
-    min_volume = CalculationManager.get_min_volume_by(today, MarketType.PEAK)
-    max_volume = CalculationManager.get_max_volume_by(today, MarketType.PEAK)
-    current_volume = f"{hourly_info.volume}"
-    total_volume = CalculationManager.get_total_volume_for_day(today)
-    average_price = CalculationManager.get_average_price_by(today, MarketType.BASE, DefaultCurrency.BGN)
-    average_price_peak = CalculationManager.get_average_price_by(today, MarketType.PEAK, DefaultCurrency.BGN)
-    average_price_off_peak = CalculationManager.get_average_price_by(today, MarketType.OFF_PEAK, DefaultCurrency.BGN)
+    hourly_info_value = f"{round(CalculationManager.get_price_by(hourly_info, DefaultCurrency.BGN) / 1000, 5)} {default_currency}"
+    min_price = f"{CalculationManager.get_min_price_by(today, MarketType.PEAK)} {default_currency}"
+    max_price = f"{CalculationManager.get_max_price_by(today, MarketType.PEAK)} {default_currency}"
+    min_volume = f"{CalculationManager.get_min_volume_by(today, MarketType.PEAK)} {default_currency}"
+    max_volume = f"{CalculationManager.get_max_volume_by(today, MarketType.PEAK)} {default_currency}"
+    current_volume = f"{hourly_info.volume} {default_currency}"
+    total_volume = f"{CalculationManager.get_total_volume_for_day(today)} {default_currency}"
+    average_price = f"{CalculationManager.get_average_price_by(today, MarketType.BASE, DefaultCurrency.BGN)} {default_currency}"
+    average_price_peak = f"{CalculationManager.get_average_price_by(today, MarketType.PEAK, DefaultCurrency.BGN)} {default_currency}"
+    average_price_off_peak = f"{CalculationManager.get_average_price_by(today, MarketType.OFF_PEAK, DefaultCurrency.BGN)} {default_currency}"
 
     context = {
         'peak_hours': peak_hours,

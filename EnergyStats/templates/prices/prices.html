@@ -7,17 +7,17 @@
     <h1 class="text-center">Energy Prices</h1>
 
     {% if prices %}
-        <div class="row justify-content-center mt-4">
+        <div class="price-container">
             {% for price in prices %}
-                <div class="col-md-3 col-6">
-                    <a href="{% url 'price_details' price.date %}" class="price-cell text-decoration-none">
-                        {% include 'common/info_cell.html' with title="Price for" value=price.date %}
-                    </a>
-                </div>
+                <a href="{% url 'price_details' price.date %}" class="price-cell text-decoration-none">
+                    <h4>PRICE FOR</h4>
+                    <div class="date">{{ price.date }}</div>
+                </a>
             {% endfor %}
         </div>
     {% else %}
         <p class="text-center">No prices available.</p>
     {% endif %}
 </div>
+
 {% endblock %}

@@ -175,3 +175,50 @@ class CalculationManager(models.Manager):
 
         return round(average_price, 2)
 
+    @staticmethod
+    def get_average_volume_by(energy_price, market_type=MarketType.BASE):
+        total_volume = 0
+        count = 0
+        peak_hours = CalculationManager.fetch_peak_hour()
+
+        for hourly_data in energy_price.hourly_data.all():
+            if market_type == MarketType.BASE and hourly_data.data:
+                volume = hourly_data.data.volume
+            elif market_type == MarketType.PEAK and peak_hours and hourly_data.time in peak_hours and hourly_data.data:
+                volume = hourly_data.data.volume
+            elif market_type == MarketType.OFF_PEAK and peak_hours and hourly_data.time not in peak_hours and hourly_data.data:
+                volume = hourly_data.data.volume
+            else:
+                volume = None
+
+            if volume is not None:
+                total_volume += volume
+                count += 1
+
+        return round(total_volume / count, 2) if count > 0 else 0.0
+
+    @staticmethod
+    def get_total_volume_by(energy_price, market_type=MarketType.BASE):
+        total_volume = 0.0
+        peak_hours = CalculationManager.fetch_peak_hour()
+
+        for hourly_data in energy_price.hourly_data.all():
+            volume = None
+
+            if market_type == MarketType.BASE:
+                volume = hourly_data.data.volume if hourly_data.data else None
+
+            elif market_type == MarketType.PEAK:
+                if peak_hours and hourly_data.time in peak_hours:
+                    volume = hourly_data.data.volume if hourly_data.data else None
+
+            elif market_type == MarketType.OFF_PEAK:
+                if peak_hours and hourly_data.time not in peak_hours:
+                    volume = hourly_data.data.volume if hourly_data.data else None
+
+            if volume is not None:
+                total_volume += volume
+
+        return round(total_volume, 2)
+
+

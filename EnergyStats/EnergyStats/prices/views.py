@@ -28,22 +28,22 @@ def price_details_view(request, date):
 
     price = get_object_or_404(EnergyPrice, date=selected_date)
 
+    default_currency = DefaultCurrency.BGN
     energy_price = LocalDataManager.get_energy_price(selected_date)
     peak_hours = LocalDataManager.get_hours_by(selected_date, MarketType.PEAK)
     off_peak_hours = LocalDataManager.get_hours_by(selected_date, MarketType.OFF_PEAK)
     hourly_info = LocalDataManager.get_hourly_info_for_current_hour(selected_date)
-    hourly_info_value = f"{round(CalculationManager.get_price_by(hourly_info, DefaultCurrency.BGN) / 1000, 5)} {DefaultCurrency.BGN}"
-    min_price = CalculationManager.get_min_price_by(selected_date, MarketType.PEAK)
-    max_price = CalculationManager.get_max_price_by(selected_date, MarketType.PEAK)
-    min_volume = CalculationManager.get_min_volume_by(selected_date, MarketType.PEAK)
-    max_volume = CalculationManager.get_max_volume_by(selected_date, MarketType.PEAK)
-    current_volume = f"{hourly_info.volume}" if hourly_info else "N/A"
-    total_volume = CalculationManager.get_total_volume_for_day(selected_date)
-    average_price = CalculationManager.get_average_price_by(selected_date, MarketType.BASE, DefaultCurrency.BGN)
-    average_price_peak = CalculationManager.get_average_price_by(selected_date, MarketType.PEAK, DefaultCurrency.BGN)
-    average_price_off_peak = CalculationManager.get_average_price_by(selected_date, MarketType.OFF_PEAK, DefaultCurrency.BGN)
+    hourly_info_value = f"{round(CalculationManager.get_price_by(hourly_info, DefaultCurrency.BGN) / 1000, 5)} {default_currency}"
+    min_price = f"{CalculationManager.get_min_price_by(selected_date, MarketType.PEAK)} {default_currency}"
+    max_price = f"{CalculationManager.get_max_price_by(selected_date, MarketType.PEAK)} {default_currency}"
+    min_volume = f"{CalculationManager.get_min_volume_by(selected_date, MarketType.PEAK)} {default_currency}"
+    max_volume = f"{CalculationManager.get_max_volume_by(selected_date, MarketType.PEAK)} {default_currency}"
+    current_volume = f"{hourly_info.volume} {default_currency}"
+    total_volume = f"{CalculationManager.get_total_volume_for_day(selected_date)} {default_currency}"
+    average_price = f"{CalculationManager.get_average_price_by(selected_date, MarketType.BASE, DefaultCurrency.BGN)} {default_currency}"
+    average_price_peak = f"{CalculationManager.get_average_price_by(selected_date, MarketType.PEAK, DefaultCurrency.BGN)} {default_currency}"
+    average_price_off_peak = f"{CalculationManager.get_average_price_by(selected_date, MarketType.OFF_PEAK, DefaultCurrency.BGN)} {default_currency}"
 
-    # Подготвяме контекста за шаблона
     context = {
         'price': price,
         'peak_hours': peak_hours,

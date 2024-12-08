@@ -1,11 +1,57 @@
 {% extends 'common/base.html' %}
-
-{% block title %}Welcome to Energy Stats{% endblock %}
+{% load static %}
 
 {% block content %}
-<div class="container text-center mt-5">
-    <h1>Welcome to Energy Stats</h1>
-    <h3>statistics</h3>
-    <p>Your one-stop platform for electricity prices and market statistics.</p>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Statistics Overview</h1>
+
+    <!-- Weekly Section -->
+    <h2 class="section-title">Weekly Statistics</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Weekly Average Price" value=weekly.average_price %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Weekly Total Volume" value=weekly.total_volume %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Weekly Min Price" value=weekly.min_price %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Weekly Max Price" value=weekly.max_price %}
+        </div>
+    </div>
+
+    <h2 class="section-title mt-5">Monthly Statistics</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Monthly Average Price" value=monthly.average_price %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Monthly Total Volume" value=monthly.total_volume %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Monthly Min Price" value=monthly.min_price %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Monthly Max Price" value=monthly.max_price %}
+        </div>
+    </div>
+
+    <h2 class="section-title mt-5">Yearly Statistics</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Yearly Average Price" value=yearly.average_price %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Yearly Total Volume" value=yearly.total_volume %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Yearly Min Price" value=yearly.min_price %}
+        </div>
+        <div class="col-md-4 col-6">
+            {% include 'common/info_cell.html' with title="Yearly Max Price" value=yearly.max_price %}
+        </div>
+    </div>
 </div>
 {% endblock %}
