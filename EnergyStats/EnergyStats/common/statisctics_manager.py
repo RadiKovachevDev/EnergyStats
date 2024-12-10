@@ -137,7 +137,7 @@ class StatisticsManager:
 
     @staticmethod
     def total_volume_by(energy_prices, measuring_units=MeasuringUnits.MWH, market_type=MarketType.BASE):
-        start_time = time.time()  # Започваме да засичаме времето
+        start_time = time.time()
         print("Start total_volume_by")
 
         total_volume = 0.0

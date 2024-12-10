@@ -4,9 +4,11 @@ from django.shortcuts import render
 from EnergyStats.common.calculation_manager import CalculationManager
 from EnergyStats.common.enums import MarketType, DefaultCurrency
 from EnergyStats.common.local_data_manager import LocalDataManager
+from EnergyStats.energy_service.cron import UpdatePricesCronJob
 
 
 def dashboard_view(request):
+
     today = date.today()
     energy_price = LocalDataManager.get_energy_price(today).first()
 
