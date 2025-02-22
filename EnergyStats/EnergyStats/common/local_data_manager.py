@@ -2,7 +2,7 @@ from typing import final
 from django.db import models
 from EnergyStats.common.enums import MarketType
 from EnergyStats.energy_service.models import EnergyPrice, PeakHourConfiguration
-from django.utils.timezone import localtime
+from django.utils.timezone import localtime, now
 
 
 @final
@@ -11,6 +11,38 @@ class LocalDataManager(models.Manager):
     @staticmethod
     def get_energy_prices():
         return EnergyPrice.objects.all()
+
+    @staticmethod
+    def get_weekly_energy_prices():
+        current_date = now()
+        current_week = current_date.isocalendar().week
+        current_year = current_date.year
+
+        return EnergyPrice.objects.filter(
+            date__week=current_week,
+            date__year=current_year
+        ).order_by('-date').prefetch_related('hourly_data')
+
+    @staticmethod
+    def get_monthly_energy_prices():
+        current_date = now()
+        current_month = current_date.month
+        current_year = current_date.year
+
+        return list(EnergyPrice.objects.filter(
+            date__month=current_month,
+            date__year=current_year
+        ).order_by('-date').prefetch_related('hourly_data'))
+
+    @staticmethod
+    def get_yearly_energy_prices():
+        current_date = now()
+        current_month = current_date.month
+        current_year = current_date.year
+
+        return list(EnergyPrice.objects.filter(
+            date__year=current_year
+        ).order_by('-date').prefetch_related('hourly_data'))
 
     @staticmethod
     def get_energy_price(date):

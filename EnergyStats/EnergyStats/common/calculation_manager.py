@@ -176,6 +176,37 @@ class CalculationManager(models.Manager):
         return round(average_price, 2)
 
     @staticmethod
+    def get_average_price_by_energy_price(energy_price, market_type, default_currency):
+        energy_price = energy_price
+        if not energy_price:
+            raise ValueError(f"No EnergyPrice found for the date")
+
+        peak_hours = CalculationManager.fetch_peak_hour()
+
+        total_price = 0
+        count = 0
+
+        for hourly_data in energy_price.hourly_data.all():
+            price = None
+
+            if market_type == MarketType.BASE:
+                price = hourly_data.data.bgn if default_currency == DefaultCurrency.BGN else hourly_data.data.eur
+            elif market_type == MarketType.PEAK:
+                if peak_hours and hourly_data.time in peak_hours:
+                    price = hourly_data.data.bgn if default_currency == DefaultCurrency.BGN else hourly_data.data.eur
+            elif market_type == MarketType.OFF_PEAK:
+                if peak_hours and hourly_data.time not in peak_hours:
+                    price = hourly_data.data.bgn if default_currency == DefaultCurrency.BGN else hourly_data.data.eur
+
+            if price is not None:
+                total_price += price
+                count += 1
+
+        average_price = total_price / count if count > 0 else 0
+
+        return round(average_price, 2)
+
+    @staticmethod
     def get_average_volume_by(energy_price, market_type=MarketType.BASE):
         total_volume = 0
         count = 0
